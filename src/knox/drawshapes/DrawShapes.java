@@ -28,7 +28,8 @@ public class DrawShapes extends JFrame
     private enum ShapeType {
         SQUARE,
         CIRCLE,
-        RECTANGLE
+        RECTANGLE,
+        TRIANGLE,
     }
     
     private DrawShapesPanel shapePanel;
@@ -260,6 +261,65 @@ public class DrawShapes extends JFrame
             }
         });
         
+       // purple color
+        addToMenu(colorMenu, "Purple", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String text=e.getActionCommand();
+                System.out.println(text);
+                // change the color instance variable to purple
+                Color purple = new Color(128, 0, 128);
+                color = purple;
+            }
+        });
+        
+       // yellow color
+        addToMenu(colorMenu, "Yellow", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String text=e.getActionCommand();
+                System.out.println(text);
+                // change the color instance variable to yellow
+                Color yellow = new Color(255, 255, 0);
+                color = yellow;
+            }
+        });
+        
+     //random color of ones provided
+        addToMenu(colorMenu, "Random Given", new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                String text=e.getActionCommand();
+                System.out.println(text);
+                // change the color to a random one provided
+                int ran = (int) (Math.random( )*5);
+                if (ran == 1) {
+                	color = Color.RED;
+                } else if (ran == 2) {
+                	color = Color.BLUE;
+                } else if (ran == 3) {
+                	color = Color.GREEN;
+                } else if (ran == 4) {
+                	Color purple = new Color(128, 0, 128);
+                    color = purple;
+                } else {
+                	Color yellow = new Color(255, 255, 0);
+                    color = yellow;
+                }
+        	}
+        });
+        
+     // random color on spectrum
+        addToMenu(colorMenu, "True Random", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String text=e.getActionCommand();
+                System.out.println(text);
+                // change the color to random numbers within the spectrum
+                int R = (int) (Math.random( )*256);
+                int G = (int)(Math.random( )*256);
+                int B= (int)(Math.random( )*256);
+                Color random = new Color(R, G, B);
+                color = random;
+            }
+        });
+        
         // shape menu
         JMenu shapeMenu = new JMenu("Shape");
         menuBar.add(shapeMenu);
@@ -282,6 +342,20 @@ public class DrawShapes extends JFrame
             }
         });
         
+        // random
+        addToMenu(shapeMenu, "Random", new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	int ran = (int) (Math.random( )*2);
+            	if (ran == 1) {
+            		System.out.println("Square");
+                    shapeType = ShapeType.SQUARE;
+            	} else {
+            		System.out.println("Circle");
+                    shapeType = ShapeType.CIRCLE;
+            	}
+            }
+        });
         
         // operation mode menu
         JMenu operationModeMenu=new JMenu("Operation");
@@ -316,7 +390,22 @@ public class DrawShapes extends JFrame
             }
         });
         
-
+        // remove option
+        addToMenu(operationModeMenu, "Remove Selected", new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		scene.removeSelected();
+        		repaint();
+        	}
+        });
+        
+        //clear option
+        addToMenu(operationModeMenu, "Clear", new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		scene.clear();
+        		repaint();
+        	}
+        });
+        
         // set the menu bar for this frame
         this.setJMenuBar(menuBar);
     }
@@ -341,6 +430,10 @@ public class DrawShapes extends JFrame
             		scene.moveSelected(-50, 0);
             	} else if (e.getKeyCode() == KeyEvent.VK_UP) {
             		scene.moveSelected(0, -50);
+            	} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            		scene.moveSelected(50, 0);
+            	} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            		scene.moveSelected(0, 50);
             	}
             	repaint();
             }
